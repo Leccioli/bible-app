@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/bible_cubit.dart';
 import '../cubits/bible_state.dart';
@@ -123,6 +124,25 @@ class _SearchPageState extends State<SearchPage> {
                               subtitle: Text(
                                 verse['text']?.replaceAll('\n', '') ?? '',
                               ),
+                              onLongPress: () {
+                                final cleanText =
+                                    verse['text']?.replaceAll('\n', '') ?? '';
+                                final contentToCopy =
+                                    '${verse['reference']}\n$cleanText';
+
+                                Clipboard.setData(
+                                  ClipboardData(text: contentToCopy),
+                                );
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Verse copied to clipboard!'),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
                             );
                           },
                         );
