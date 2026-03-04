@@ -35,6 +35,8 @@ class _SearchPageState extends State<SearchPage> {
                       return DropdownMenu<String>(
                         width: MediaQuery.of(context).size.width - 32,
                         hintText: 'Type or select a Bible version',
+                        requestFocusOnTap: true,
+                        enableFilter: true,
                         enableSearch: true,
                         onSelected: (value) => _selectedBibleId = value,
                         dropdownMenuEntries: state.bibles.map((bible) {
