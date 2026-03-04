@@ -20,6 +20,20 @@ class BibleApiClient {
     }
   }
 
+  Future<dynamic> searchKeyWord(String bibleId, String query) async {
+    final url = Uri.parse('$_baseUrl/v1/bibles/$bibleId/search?query=$query&limit=50');
+
+    final response = await http.get(url, headers: {'api-key': _apiKey});
+
+    if (response.statusCode == 200) {
+      final parsedData = await Isolate.run(() => jsonDecode(response.body));
+      print('Found: ${parsedData['data']['total']} verses for query "$query" in Bible ID "$bibleId".');
+      return parsedData['data'];
+    } else {
+      throw Exception('Failed to search keyword: ${response.statusCode}');
+    }
+  }
+
   List<Bible> _processJson(String responseBody) {
     final decodedData = jsonDecode(responseBody);
     final rawBibles = decodedData['data'] as List;
