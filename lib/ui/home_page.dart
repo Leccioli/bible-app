@@ -1,8 +1,6 @@
-import 'package:bible/cubits/bible_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bibles_page.dart';
-import '../data/bible_api_client.dart';
+import 'search_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,12 +30,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (context) => BibleCubit(BibleApiClient()),
-                      child: const BiblesPage(),
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (context) => const BiblesPage()),
                 );
               },
             ),
@@ -51,7 +44,12 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                );
+              },
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
