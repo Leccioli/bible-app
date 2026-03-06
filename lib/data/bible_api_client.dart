@@ -21,16 +21,33 @@ class BibleApiClient {
   }
 
   Future<dynamic> searchKeyWord(String bibleId, String query) async {
-    final url = Uri.parse('$_baseUrl/v1/bibles/$bibleId/search?query=$query&limit=50');
+    final url = Uri.parse(
+      '$_baseUrl/v1/bibles/$bibleId/search?query=$query&limit=50',
+    );
 
     final response = await http.get(url, headers: {'api-key': _apiKey});
 
     if (response.statusCode == 200) {
       final parsedData = await Isolate.run(() => jsonDecode(response.body));
-      print('Found: ${parsedData['data']['total']} verses for query "$query" in Bible ID "$bibleId".');
+      print(
+        'Found: ${parsedData['data']['total']} verses for query "$query" in Bible ID "$bibleId".',
+      );
       return parsedData['data'];
     } else {
       throw Exception('Failed to search keyword: ${response.statusCode}');
+    }
+  }
+
+  Future<dynamic> fetchVerse(String bibleId, String verseId) async {
+    final url = Uri.parse('$_baseUrl/v1/bibles/$bibleId/verses/$verseId');
+
+    final response = await http.get(url, headers: {'api-key': _apiKey});
+
+    if (response.statusCode == 200) {
+      final parsedData = await Isolate.run(() => jsonDecode(response.body));
+      return parsedData['data'];
+    } else {
+      throw Exception('Failed to fetch verse: ${response.statusCode}');
     }
   }
 
