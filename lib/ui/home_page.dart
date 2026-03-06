@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'bibles_page.dart';
+import 'daily_verse_page.dart';
 import 'search_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -58,7 +59,14 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(16.0),
                 child: Text('Daily Verse', style: TextStyle(fontSize: 18)),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DailyVersePage(),
+                  ),
+                );
+              },
             ),
           ],
         ),
