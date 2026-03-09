@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:isolate';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../data/models/bible.dart';
 import 'secrets.dart';
@@ -29,7 +30,7 @@ class BibleApiClient {
 
     if (response.statusCode == 200) {
       final parsedData = await Isolate.run(() => jsonDecode(response.body));
-      print(
+      debugPrint(
         'Found: ${parsedData['data']['total']} verses for query "$query" in Bible ID "$bibleId".',
       );
       return parsedData['data'];

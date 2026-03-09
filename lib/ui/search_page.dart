@@ -19,6 +19,12 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _queryController = TextEditingController();
 
   @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchCubit(BibleApiClient()),
