@@ -3,19 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/bible_cubit.dart';
 import '../cubits/bible_state.dart';
 
-class BiblesPage extends StatefulWidget {
+class BiblesPage extends StatelessWidget {
   const BiblesPage({super.key});
-
-  @override
-  State<BiblesPage> createState() => _BiblesPageState();
-}
-
-class _BiblesPageState extends State<BiblesPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<BibleCubit>().loadBibles();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +35,7 @@ class _BiblesPageState extends State<BiblesPage> {
                   title: Text(bible.name),
                   subtitle: Text(bible.abbreviation),
                   onTap: () {
-                    print(
+                    debugPrint(
                       'You\'ve selected ${bible.name} (${bible.abbreviation})',
                     );
                   },
