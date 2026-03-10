@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import '../data/models/bible.dart';
+import '../core/constants.dart';
+import 'models/bible.dart';
 import 'secrets.dart';
 
 class BibleApiClient {
-  final String _baseUrl = 'https://rest.api.bible';
+  final String _baseUrl = AppConstants.apiBaseUrl;
   final String _apiKey = apiKey;
 
   Future<List<Bible>> fetchBibles() async {
@@ -21,7 +22,7 @@ class BibleApiClient {
     }
   }
 
-  Future<dynamic> searchKeyWord(String bibleId, String query) async {
+  Future<dynamic> searchKeyword(String bibleId, String query) async {
     final url = Uri.parse(
       '$_baseUrl/v1/bibles/$bibleId/search?query=$query&limit=50',
     );
