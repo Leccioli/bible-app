@@ -1,22 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/bible_api_client.dart';
-import '../data/daily_verses.dart';
+import '../data/repositories/bible_repository.dart';
 import 'daily_verse_state.dart';
 
 class DailyVerseCubit extends Cubit<DailyVerseState> {
-  final BibleApiClient apiClient;
-  final String _kjvBibleId = 'de4e12af7f28f599-02';
+  final BibleRepository _repository;
 
-  DailyVerseCubit(this.apiClient) : super(DailyVerseInitial());
+  DailyVerseCubit(this._repository) : super(const DailyVerseState());
 
   Future<void> fetchDailyVerse() async {
-    emit(DailyVerseLoading());
+    emit(state.copyWith(loading: true, error: null));
     try {
-      final verseId = getVerseOfTheDay();
-      final data = await apiClient.fetchVerse(_kjvBibleId, verseId);
-      emit(DailyVerseSuccess(data));
+      final dailyVerse = await _repository.getDailyVerse();
+      emit(state.copyWith(loading: false, dailyVerse: dailyVerse));
     } catch (e) {
-      emit(DailyVerseError('Failed to load daily verse: $e'));
+      emit(state.copyWith(loading: false, error: 'Failed to load daily verse: $e'));
     }
   }
 }

@@ -1,21 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/bible_api_client.dart';
+import '../data/repositories/bible_repository.dart';
 import 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
-  final BibleApiClient _apiClient;
-  SearchCubit(this._apiClient) : super(SearchInitial());
+  final BibleRepository _repository;
+  SearchCubit(this._repository) : super(const SearchState());
 
   Future<void> search(String bibleId, String query) async {
     if (query.isEmpty || bibleId.isEmpty) return;
 
-    emit(SearchLoading());
+    emit(state.copyWith(loading: true, error: null));
     try {
-      final data = await _apiClient.searchKeyWord(bibleId, query);
-      final verses = data['verses'] as List<dynamic>? ?? [];
-      emit(SearchSuccess(verses));
+      final verses = await _repository.searchKeyword(bibleId, query);
+      emit(state.copyWith(loading: false, verses: verses));
     } catch (e) {
-      emit(SearchError('Failed to search: $e'));
+      emit(state.copyWith(loading: false, error: 'Failed to search: $e'));
     }
   }
 }
