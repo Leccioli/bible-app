@@ -5,7 +5,7 @@ import '../cubits/bible_cubit.dart';
 import '../cubits/bible_state.dart';
 import '../cubits/search_cubit.dart';
 import '../cubits/search_state.dart';
-import '../data/bible_api_client.dart';
+import '../data/repositories/bible_repository.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchCubit(BibleApiClient()),
+      create: (context) => SearchCubit(context.read<BibleRepository>()),
       child: Scaffold(
         appBar: AppBar(title: const Text('Search for a Keyword')),
         body: SafeArea(
@@ -37,27 +37,26 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 BlocBuilder<BibleCubit, BibleState>(
                   builder: (context, state) {
-                    if (state is BibleSuccess) {
-                      return DropdownMenu<String>(
-                        width: MediaQuery.of(context).size.width - 32,
-                        hintText: 'Type or select a Bible version',
-                        requestFocusOnTap: true,
-                        enableFilter: true,
-                        enableSearch: true,
-                        onSelected: (value) => _selectedBibleId = value,
-                        dropdownMenuEntries: state.bibles.map((bible) {
-                          return DropdownMenuEntry<String>(
-                            value: bible.id,
-                            label: bible.name,
-                          );
-                        }).toList(),
-                      );
+                    if (state.loading && state.bibles.isEmpty) {
+                      return const CircularProgressIndicator();
                     }
-                    return const CircularProgressIndicator();
+                    return DropdownMenu<String>(
+                      width: MediaQuery.of(context).size.width - 32,
+                      hintText: 'Type or select a Bible version',
+                      requestFocusOnTap: true,
+                      enableFilter: true,
+                      enableSearch: true,
+                      onSelected: (value) => _selectedBibleId = value,
+                      dropdownMenuEntries: state.bibles.map((bible) {
+                        return DropdownMenuEntry<String>(
+                          value: bible.id,
+                          label: bible.name,
+                        );
+                      }).toList(),
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
-
                 Row(
                   children: [
                     Expanded(
@@ -108,57 +107,59 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
                 const SizedBox(height: 16),
-
                 Expanded(
-                  child: BlocBuilder<SearchCubit, SearchState>(
-                    builder: (context, state) {
-                      if (state is SearchLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is SearchError) {
-                        return Center(child: Text(state.message));
-                      } else if (state is SearchSuccess) {
-                        final verses = state.verses;
-                        if (verses.isEmpty) {
-                          return const Center(
-                            child: Text('No verses found for this keyword.'),
-                          );
-                        }
-                        return ListView.builder(
-                          itemCount: verses.length,
-                          itemBuilder: (context, index) {
-                            final verse = verses[index];
-                            return ListTile(
-                              title: Text(verse['reference'] ?? ''),
-                              subtitle: Text(
-                                verse['text']?.replaceAll('\n', '') ?? '',
-                              ),
-                              onLongPress: () {
-                                final cleanText =
-                                    verse['text']?.replaceAll('\n', '') ?? '';
-                                final contentToCopy =
-                                    '${verse['reference']}\n$cleanText';
-
-                                Clipboard.setData(
-                                  ClipboardData(text: contentToCopy),
-                                );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Verse copied to clipboard!'),
-                                    backgroundColor: Colors.green,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                            );
-                          },
+                  child: BlocConsumer<SearchCubit, SearchState>(
+                    listenWhen: (previous, current) =>
+                        previous.error != current.error,
+                    listener: (context, state) {
+                      if (state.error != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.error!),
+                            backgroundColor: Colors.red,
+                          ),
                         );
                       }
-                      return const Center(
-                        child: Text(
-                          'Enter a keyword and select a Bible to search.',
-                        ),
+                    },
+                    buildWhen: (previous, current) =>
+                        previous.loading != current.loading ||
+                        previous.verses != current.verses,
+                    builder: (context, state) {
+                      if (state.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (state.verses.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'Enter a keyword and select a Bible to search.',
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        itemCount: state.verses.length,
+                        itemBuilder: (context, index) {
+                          final verse = state.verses[index];
+                          return ListTile(
+                            title: Text(verse.reference),
+                            subtitle: Text(verse.text),
+                            onLongPress: () {
+                              final contentToCopy =
+                                  '${verse.reference}\n${verse.text}';
+                              Clipboard.setData(
+                                ClipboardData(text: contentToCopy),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Verse copied to clipboard!'),
+                                  backgroundColor: Colors.green,
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       );
                     },
                   ),

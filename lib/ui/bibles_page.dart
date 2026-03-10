@@ -13,37 +13,46 @@ class BiblesPage extends StatelessWidget {
         title: const Text('Holy Bible'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: BlocBuilder<BibleCubit, BibleState>(
-        builder: (context, state) {
-          if (state is BibleInitial || state is BibleLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is BibleError) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: Colors.red),
+      body: BlocConsumer<BibleCubit, BibleState>(
+        listenWhen: (previous, current) => previous.error != current.error,
+        listener: (context, state) {
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error!),
+                backgroundColor: Colors.red,
               ),
             );
-          } else if (state is BibleSuccess) {
-            final bibles = state.bibles;
-            return ListView.builder(
-              itemCount: bibles.length,
-              itemBuilder: (context, index) {
-                final bible = bibles[index];
-                return ListTile(
-                  leading: const Icon(Icons.book),
-                  title: Text(bible.name),
-                  subtitle: Text(bible.abbreviation),
-                  onTap: () {
-                    debugPrint(
-                      'You\'ve selected ${bible.name} (${bible.abbreviation})',
-                    );
-                  },
-                );
-              },
-            );
           }
-          return const SizedBox.shrink();
+        },
+        buildWhen: (previous, current) =>
+            previous.loading != current.loading ||
+            previous.bibles != current.bibles,
+        builder: (context, state) {
+          if (state.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.bibles.isEmpty) {
+            return const Center(child: Text('No bibles found'));
+          }
+
+          return ListView.builder(
+            itemCount: state.bibles.length,
+            itemBuilder: (context, index) {
+              final bible = state.bibles[index];
+              return ListTile(
+                leading: const Icon(Icons.book),
+                title: Text(bible.name),
+                subtitle: Text(bible.abbreviation),
+                onTap: () {
+                  debugPrint(
+                    'You\'ve selected ${bible.name} (${bible.abbreviation})',
+                  );
+                },
+              );
+            },
+          );
         },
       ),
     );
