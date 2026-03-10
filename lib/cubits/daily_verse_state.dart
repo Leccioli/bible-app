@@ -1,15 +1,29 @@
-abstract class DailyVerseState {}
+import 'package:equatable/equatable.dart';
+import '../data/models/daily_verse.dart';
 
-class DailyVerseInitial extends DailyVerseState {}
+class DailyVerseState extends Equatable {
+  final bool loading;
+  final String? error;
+  final DailyVerse? dailyVerse;
 
-class DailyVerseLoading extends DailyVerseState {}
+  const DailyVerseState({
+    this.loading = false,
+    this.error,
+    this.dailyVerse,
+  });
 
-class DailyVerseSuccess extends DailyVerseState {
-  final Map<String, dynamic> verseData;
-  DailyVerseSuccess(this.verseData);
-}
+  DailyVerseState copyWith({
+    bool? loading,
+    String? error,
+    DailyVerse? dailyVerse,
+  }) {
+    return DailyVerseState(
+      loading: loading ?? this.loading,
+      error: error,
+      dailyVerse: dailyVerse ?? this.dailyVerse,
+    );
+  }
 
-class DailyVerseError extends DailyVerseState {
-  final String message;
-  DailyVerseError(this.message);
+  @override
+  List<Object?> get props => [loading, error, dailyVerse];
 }

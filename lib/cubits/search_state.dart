@@ -1,15 +1,25 @@
-abstract class SearchState {}
+import 'package:equatable/equatable.dart';
+import '../data/models/search_verse.dart';
 
-class SearchInitial extends SearchState {}
+class SearchState extends Equatable {
+  final bool loading;
+  final String? error;
+  final List<SearchVerse> verses;
 
-class SearchLoading extends SearchState {}
+  const SearchState({this.loading = false, this.error, this.verses = const []});
 
-class SearchSuccess extends SearchState {
-  final List<dynamic> verses;
-  SearchSuccess(this.verses);
-}
+  SearchState copyWith({
+    bool? loading,
+    String? error,
+    List<SearchVerse>? verses,
+  }) {
+    return SearchState(
+      loading: loading ?? this.loading,
+      error: error,
+      verses: verses ?? this.verses,
+    );
+  }
 
-class SearchError extends SearchState {
-  final String message;
-  SearchError(this.message);
+  @override
+  List<Object?> get props => [loading, error, verses];
 }

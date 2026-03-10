@@ -1,19 +1,21 @@
+import 'package:equatable/equatable.dart';
 import '../data/models/bible.dart';
 
-abstract class BibleState {}
-
-class BibleInitial extends BibleState {}
-
-class BibleLoading extends BibleState {}
-
-class BibleSuccess extends BibleState {
+class BibleState extends Equatable {
+  final bool loading;
+  final String? error;
   final List<Bible> bibles;
 
-  BibleSuccess(this.bibles);
-}
+  const BibleState({this.loading = false, this.error, this.bibles = const []});
 
-class BibleError extends BibleState {
-  final String message;
+  BibleState copyWith({bool? loading, String? error, List<Bible>? bibles}) {
+    return BibleState(
+      loading: loading ?? this.loading,
+      error: error,
+      bibles: bibles ?? this.bibles,
+    );
+  }
 
-  BibleError(this.message);
+  @override
+  List<Object?> get props => [loading, error, bibles];
 }

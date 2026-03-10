@@ -1,22 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/bible_api_client.dart';
+import '../data/repositories/bible_repository.dart';
 import 'bible_state.dart';
 
 class BibleCubit extends Cubit<BibleState> {
-  final BibleApiClient _apiClient;
+  final BibleRepository _repository;
 
-  BibleCubit(this._apiClient) : super(BibleInitial());
+  BibleCubit(this._repository) : super(const BibleState());
 
   Future<void> loadBibles() async {
-    emit(BibleLoading());
-
+    emit(state.copyWith(loading: true, error: null));
     try {
-      final bibles = await _apiClient.fetchBibles();
-
-      emit(BibleSuccess(bibles));
-
+      final bibles = await _repository.getBibles();
+      emit(state.copyWith(loading: false, bibles: bibles));
     } catch (e) {
-      emit(BibleError('Failed to load bibles: $e'));
+      emit(state.copyWith(loading: false, error: 'Failed to load bibles: $e'));
     }
   }
 }
