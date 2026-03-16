@@ -39,6 +39,8 @@ dependencies:
   equatable: ^2.0.8
 
 dev_dependencies:
+  bloc_test: ^9.1.7
+  mocktail: ^1.0.4
   flutter_test:
     sdk: flutter
 
