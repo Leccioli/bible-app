@@ -46,3 +46,6 @@ app.*.map.json
 
 # API keys and other secrets
 /lib/data/secrets.dart
+
+# Copilot instructions
+/.github/copilot-instructions.md
