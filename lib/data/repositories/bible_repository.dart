@@ -1,6 +1,9 @@
 import '../bible_api_client.dart';
 import '../daily_verses.dart';
 import '../models/bible.dart';
+import '../models/book.dart';
+import '../models/chapter.dart';
+import '../models/chapter_summary.dart';
 import '../models/daily_verse.dart';
 import '../models/search_verse.dart';
 import '../models/verse.dart';
@@ -15,6 +18,17 @@ class BibleRepository {
     return await _apiClient.fetchBibles();
   }
 
+  Future<List<Book>> getBooks(String bibleId) async {
+    return await _apiClient.fetchBooks(bibleId);
+  }
+
+  Future<List<ChapterSummary>> getChapters(String bibleId, String bookId) async {
+    return await _apiClient.fetchChapters(bibleId, bookId);
+  }
+  
+  Future<Chapter> getChapter(String bibleId, String chapterId) async {
+    return await _apiClient.fetchChapter(bibleId, chapterId);
+  }
   Future<List<SearchVerse>> searchKeyword(String bibleId, String query) async {
     final data = await _apiClient.searchKeyword(bibleId, query);
     final verses = data['verses'] as List<dynamic>? ?? [];
