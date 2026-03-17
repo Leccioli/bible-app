@@ -41,34 +41,34 @@ class BooksPage extends StatelessWidget {
 
             if (state.books.isEmpty) {
               return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.menu_book_outlined,
-                      size: 48,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'No books found',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.menu_book_outlined,
+                        size: 48,
+                        color: Colors.grey,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Try selecting a different book or check your internet connection.',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                      SizedBox(height: 12),
+                      Text(
+                        'No books found',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Try selecting a different book or check your internet connection.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
             }
 
             return ListView.builder(
