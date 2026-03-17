@@ -2,6 +2,9 @@ import 'package:bible/core/constants.dart';
 import 'package:bible/data/bible_api_client.dart';
 import 'package:bible/data/daily_verses.dart';
 import 'package:bible/data/models/bible.dart';
+import 'package:bible/data/models/book.dart';
+import 'package:bible/data/models/chapter.dart';
+import 'package:bible/data/models/chapter_summary.dart';
 import 'package:bible/data/repositories/bible_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -29,6 +32,88 @@ void main() {
 
       expect(result, bibles);
       verify(() => apiClient.fetchBibles()).called(1);
+    });
+  });
+
+  group('getBooks', () {
+    test('returns books from api client', () async {
+      const books = [
+        Book(
+          id: 'GEN',
+          bibleId: 'bible-id',
+          abbreviation: 'Gen',
+          name: 'Genesis',
+          nameLong: 'The First Book of Moses Called Genesis',
+        ),
+        Book(
+          id: 'EXO',
+          bibleId: 'bible-id',
+          abbreviation: 'Exo',
+          name: 'Exodus',
+          nameLong: 'The Second Book of Moses Called Exodus',
+        ),
+      ];
+
+      when(() => apiClient.fetchBooks('bible-id')).thenAnswer((_) async => books);
+
+      final result = await repository.getBooks('bible-id');
+
+      expect(result, books);
+      verify(() => apiClient.fetchBooks('bible-id')).called(1);
+    });
+  });
+
+  group('getChapters', () {
+    test('returns chapters from api client', () async {
+      const chapters = [
+        ChapterSummary(
+          id: 'GEN.1',
+          bibleId: 'bible-id',
+          number: '1',
+          bookId: 'GEN',
+          reference: 'Genesis 1',
+        ),
+        ChapterSummary(
+          id: 'GEN.2',
+          bibleId: 'bible-id',
+          number: '2',
+          bookId: 'GEN',
+          reference: 'Genesis 2',
+        ),
+      ];
+
+      when(() => apiClient.fetchChapters('bible-id', 'GEN'))
+          .thenAnswer((_) async => chapters);
+
+      final result = await repository.getChapters('bible-id', 'GEN');
+
+      expect(result, chapters);
+      verify(() => apiClient.fetchChapters('bible-id', 'GEN')).called(1);
+    });
+  });
+
+  group('getChapter', () {
+    test('returns chapter from api client', () async {
+      const chapter = Chapter(
+        id: 'GEN.2',
+        bibleId: 'bible-id',
+        number: '2',
+        bookId: 'GEN',
+        content: '<p><span class="v">1</span>Thus the heavens...</p>',
+        reference: 'Genesis 2',
+        verseCount: 25,
+        copyright: 'PUBLIC DOMAIN',
+        nextChapterId: 'GEN.3',
+        previousChapterId: 'GEN.1',
+      );
+
+      when(() => apiClient.fetchChapter('bible-id', 'GEN.2'))
+          .thenAnswer((_) async => chapter);
+
+      final result = await repository.getChapter('bible-id', 'GEN.2');
+
+      expect(result, chapter);
+      verify(() => apiClient.fetchChapter('bible-id', 'GEN.2')).called(1);
     });
   });
 

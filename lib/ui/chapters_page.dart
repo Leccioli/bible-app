@@ -1,20 +1,20 @@
+import 'package:bible/cubits/reader_cubit.dart';
+import 'package:bible/cubits/reader_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/bible_cubit.dart';
-import '../cubits/bible_state.dart';
-import 'books_page.dart';
 
-class BiblesPage extends StatelessWidget {
-  const BiblesPage({super.key});
+import 'reader_page.dart';
+
+class ChaptersPage extends StatelessWidget {
+  final String bookTitle;
+
+  const ChaptersPage({super.key, required this.bookTitle});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Holy Bible'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: BlocConsumer<BibleCubit, BibleState>(
+      appBar: AppBar(title: Text(bookTitle)),
+      body: BlocConsumer<ReaderCubit, ReaderState>(
         listenWhen: (previous, current) => previous.error != current.error,
         listener: (context, state) {
           if (state.error != null) {
@@ -28,13 +28,13 @@ class BiblesPage extends StatelessWidget {
         },
         buildWhen: (previous, current) =>
             previous.loading != current.loading ||
-            previous.bibles != current.bibles,
+            previous.chapters != current.chapters,
         builder: (context, state) {
-          if (state.loading) {
+          if (state.loading && state.chapters.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (state.bibles.isEmpty) {
+          if (state.chapters.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -48,7 +48,7 @@ class BiblesPage extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     Text(
-                      'No Bible versions found',
+                      'No chapters found',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -57,7 +57,7 @@ class BiblesPage extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Try selecting a different Bible version or check your internet connection.',
+                      'Try selecting a different chapter or check your internet connection.',
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -67,17 +67,26 @@ class BiblesPage extends StatelessWidget {
           }
 
           return ListView.builder(
-            itemCount: state.bibles.length,
+            itemCount: state.chapters.length,
             itemBuilder: (context, index) {
-              final bible = state.bibles[index];
+              final chapter = state.chapters[index];
               return ListTile(
-                leading: const Icon(Icons.book),
-                title: Text(bible.name),
-                subtitle: Text(bible.abbreviation),
-                onTap: () {
+                leading: const Icon(Icons.bookmark_border),
+                title: Text('Chapter ${chapter.number}'),
+                subtitle: Text(chapter.reference),
+                onTap: () async {
+                  await context.read<ReaderCubit>().loadChapter(chapter.id);
+
+                  if (!context.mounted) return;
+
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => BooksPage(bible: bible)),
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<ReaderCubit>(),
+                        child: const ReaderPage(),
+                      ),
+                    ),
                   );
                 },
               );
