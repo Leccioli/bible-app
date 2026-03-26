@@ -1,5 +1,5 @@
-import 'package:bible/cubits/search_cubit.dart';
-import 'package:bible/cubits/search_state.dart';
+import 'package:bible/cubits/search/search_cubit.dart';
+import 'package:bible/cubits/search/search_state.dart';
 import 'package:bible/data/models/search_verse.dart';
 import 'package:bible/data/repositories/bible_repository.dart';
 import 'package:bloc_test/bloc_test.dart';

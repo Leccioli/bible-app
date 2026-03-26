@@ -1,5 +1,5 @@
-import 'package:bible/cubits/bible_cubit.dart';
-import 'package:bible/cubits/bible_state.dart';
+import 'package:bible/cubits/bible/bible_cubit.dart';
+import 'package:bible/cubits/bible/bible_state.dart';
 import 'package:bible/data/models/bible.dart';
 import 'package:bible/data/repositories/bible_repository.dart';
 import 'package:bloc_test/bloc_test.dart';

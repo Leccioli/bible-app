@@ -1,5 +1,5 @@
-import 'package:bible/cubits/reader_cubit.dart';
-import 'package:bible/cubits/reader_state.dart';
+import 'package:bible/cubits/reader/reader_cubit.dart';
+import 'package:bible/cubits/reader/reader_state.dart';
 import 'package:bible/data/models/book.dart';
 import 'package:bible/data/models/chapter.dart';
 import 'package:bible/data/models/chapter_summary.dart';

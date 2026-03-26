@@ -1,5 +1,5 @@
-import 'package:bible/cubits/daily_verse_cubit.dart';
-import 'package:bible/cubits/daily_verse_state.dart';
+import 'package:bible/cubits/daily_verse/daily_verse_cubit.dart';
+import 'package:bible/cubits/daily_verse/daily_verse_state.dart';
 import 'package:bible/data/models/daily_verse.dart';
 import 'package:bible/data/models/verse.dart';
 import 'package:bible/data/repositories/bible_repository.dart';

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../data/models/bible.dart';
+import '../../data/models/bible.dart';
 
 class BibleState extends Equatable {
   final bool loading;

@@ -1,5 +1,5 @@
-import 'package:bible/cubits/reader_cubit.dart';
-import 'package:bible/cubits/reader_state.dart';
+import 'package:bible/cubits/reader/reader_cubit.dart';
+import 'package:bible/cubits/reader/reader_state.dart';
 import 'package:bible/data/models/bible.dart';
 import 'package:bible/data/repositories/bible_repository.dart';
 import 'package:flutter/material.dart';

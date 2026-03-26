@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../data/models/book.dart';
-import '../data/models/chapter.dart';
-import '../data/models/chapter_summary.dart';
+import '../../data/models/book.dart';
+import '../../data/models/chapter.dart';
+import '../../data/models/chapter_summary.dart';
 
 class ReaderState extends Equatable {
   final bool loading;

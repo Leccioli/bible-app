@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/repositories/bible_repository.dart';
+import '../../data/repositories/bible_repository.dart';
 import 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
