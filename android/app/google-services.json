@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "935520052909",
+    "project_id": "bible-reader-app-c16bb",
+    "storage_bucket": "bible-reader-app-c16bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935520052909:android:b398b7d7534a503c3b4824",
+        "android_client_info": {
+          "package_name": "com.example.bible"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbprprLH97bWZ8d3Iy7boBTP99Od79trA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
