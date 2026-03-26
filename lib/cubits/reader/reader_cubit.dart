@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/models/book.dart';
-import '../data/repositories/bible_repository.dart';
+import '../../data/models/book.dart';
+import '../../data/repositories/bible_repository.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {

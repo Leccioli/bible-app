@@ -1,8 +1,8 @@
 import 'package:bible/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/daily_verse_cubit.dart';
-import '../cubits/daily_verse_state.dart';
+import '../cubits/daily_verse/daily_verse_cubit.dart';
+import '../cubits/daily_verse/daily_verse_state.dart';
 import '../data/repositories/bible_repository.dart';
 
 class DailyVersePage extends StatelessWidget {

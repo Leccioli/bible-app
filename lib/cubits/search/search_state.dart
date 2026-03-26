@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../data/models/search_verse.dart';
+import '../../data/models/search_verse.dart';
 
 class SearchState extends Equatable {
   final bool loading;

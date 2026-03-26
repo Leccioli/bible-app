@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/bible_cubit.dart';
-import '../cubits/bible_state.dart';
-import '../cubits/search_cubit.dart';
-import '../cubits/search_state.dart';
+import '../cubits/bible/bible_cubit.dart';
+import '../cubits/bible/bible_state.dart';
+import '../cubits/search/search_cubit.dart';
+import '../cubits/search/search_state.dart';
 import '../data/repositories/bible_repository.dart';
 
 class SearchPage extends StatefulWidget {

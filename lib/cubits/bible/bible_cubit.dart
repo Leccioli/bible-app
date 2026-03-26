@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/repositories/bible_repository.dart';
+import '../../data/repositories/bible_repository.dart';
 import 'bible_state.dart';
 
 class BibleCubit extends Cubit<BibleState> {

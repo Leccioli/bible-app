@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/bible_cubit.dart';
-import '../cubits/bible_state.dart';
+import '../cubits/bible/bible_cubit.dart';
+import '../cubits/bible/bible_state.dart';
 import 'books_page.dart';
 
 class BiblesPage extends StatelessWidget {

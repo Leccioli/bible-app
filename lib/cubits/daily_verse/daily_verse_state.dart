@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../data/models/daily_verse.dart';
+import '../../data/models/daily_verse.dart';
 
 class DailyVerseState extends Equatable {
   final bool loading;
