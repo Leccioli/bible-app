@@ -1,11 +1,19 @@
-import 'package:bible/cubits/bible_cubit.dart';
+import 'package:bible/cubits/bible/bible_cubit.dart';
 import 'package:bible/data/bible_api_client.dart';
 import 'package:bible/data/repositories/bible_repository.dart';
 import 'package:bible/ui/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
   final apiClient = BibleApiClient();
   final repository = BibleRepository(apiClient);
 
@@ -22,9 +30,8 @@ class MyBibleApp extends StatelessWidget {
     return RepositoryProvider(
       create: (context) => repository,
       child: BlocProvider(
-        create: (context) => BibleCubit(
-          context.read<BibleRepository>(),
-        )..loadBibles(),
+        create: (context) =>
+            BibleCubit(context.read<BibleRepository>())..loadBibles(),
         child: MaterialApp(
           title: 'My Bible App',
           theme: ThemeData(
